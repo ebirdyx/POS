@@ -1,6 +1,13 @@
+import controllers.InventoryController;
+import views.Console;
+
 public class Main {
     public static void main(String[] args){
-        System.out.println("hello world");
-        System.out.println("bobooo u goof");
+        InventoryController inventoryController = new InventoryController();
+
+        Console console = new Console(inventoryController);
+        console.run();
     }
+
 }
+
