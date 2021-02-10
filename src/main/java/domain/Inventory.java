@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 
 public class Inventory {
@@ -11,13 +10,20 @@ public class Inventory {
         items = new ArrayList<Item>();    // inti array
     }
 
-    public void addNewItems(Item item) {
+    public String createNewItem(String name, double price) {
+        //create item
+        Item item = new Item(name,price);
+
+        //add item to inventory
         items.add(item);
+
+        //return generated code of the new item
+        return item.getCode();
     }
-
-
 
     public ArrayList<Item> getItems() {
         return items;
     }
+
+
 }

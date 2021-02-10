@@ -51,4 +51,8 @@ public class Item {
         this.soldQuantity += quantity;
     }
 
+    public String getCode() {
+        return code;
+    }
+
 }
