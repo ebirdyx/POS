@@ -2,6 +2,7 @@ package views;
 
 import controllers.InventoryController;
 import domain.Item;
+import errors.NameAlreadyExists;
 import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
 import utils.Converters;
@@ -45,6 +46,9 @@ public class Console {
             createItemMenu();
         }catch(NameCannotBeEmpty e){
             System.out.println("Name cannot be empty.");
+            createItemMenu();
+        } catch (NameAlreadyExists e) {
+            System.out.println("Name already exists.");
             createItemMenu();
         }
     }

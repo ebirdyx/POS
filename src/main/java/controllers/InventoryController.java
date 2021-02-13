@@ -2,6 +2,7 @@ package controllers;
 
 import domain.Inventory;
 import domain.Item;
+import errors.NameAlreadyExists;
 import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
 
@@ -13,7 +14,7 @@ public class InventoryController {
     }
 
     public Item createNewItem(String name, double price)
-            throws PriceCannotBeNegative, NameCannotBeEmpty {
+            throws PriceCannotBeNegative, NameCannotBeEmpty, NameAlreadyExists {
 
         //price cant be negative
         if (price <= 0) {
