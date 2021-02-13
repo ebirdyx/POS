@@ -43,6 +43,10 @@ public class posController {
         return this.pos.getUsers();
     }
 
+    public List<Sale> getSales() {
+        return this.pos.getSales();
+    }
+
     public User authenticate(String pin) throws InvalidPinNumber {
         return this.pos.authenticate(pin);
     }

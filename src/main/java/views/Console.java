@@ -132,14 +132,26 @@ public class Console {
         System.out.println();
     }
 
+    public void displaySalesReport(){
+        displayTitle("Sales report");
+
+        List<Sale> sales = this.posController.getSales();
+        for (int i = 0; i < sales.size(); i++) {
+            System.out.println(sales.get(i).toString());
+        }
+
+        System.out.println();
+    }
+
     public void displayMainMenu() {
         displayTitle("POS system");
         System.out.println("1. Create new Item");
         System.out.println("2. List Items ");
         System.out.println("3. Add quantity to inventory");
         System.out.println("4. Sell item");
-        System.out.println("5. Logout");
-        System.out.println("6. Quit ");
+        System.out.println("5. Print sale report");
+        System.out.println("l. Logout");
+        System.out.println("q. Quit ");
 
         switch (getUserInput("Please choose an option: ")) {
             case "1":
@@ -155,11 +167,14 @@ public class Console {
                 sellItemMenu();
                 break;
             case "5":
+                displaySalesReport();
+                break;
+            case "l":
                 // Assign null to user property
                 // to remove previous logged in user
                 user = null;
                 login();
-            case "6":
+            case "q":
                 System.out.println("GOODBYE");
                 return;
             default:

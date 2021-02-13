@@ -132,6 +132,10 @@ public class POS {
         return users;
     }
 
+    public ArrayList<Sale> getSales() {
+        return sales;
+    }
+
     public User authenticate(String pin) throws InvalidPinNumber {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).authenticate(pin)) {
