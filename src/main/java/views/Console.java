@@ -7,6 +7,7 @@ import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
 import utils.Converters;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Console {
@@ -53,6 +54,15 @@ public class Console {
         }
     }
 
+    public void displayInventoryItems() {
+        List<Item> items = this.inventoryController.getItems();
+        //  show item menu
+        System.out.println("Listing of inventory menu:");
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println(items.get(i).toString());
+        }
+    }
+
     public void displayMainMenu() {
 
         System.out.println("POS system");
@@ -65,8 +75,11 @@ public class Console {
         switch (getUserInput("Please choose an option: ")) {
             case "1":
                 createItemMenu();
+                displayMainMenu();
                 break;
             case "2":
+                displayInventoryItems();
+                displayMainMenu();
                 break;
             case "3":
                 break;

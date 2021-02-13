@@ -8,8 +8,12 @@ public class Inventory {
 
     private ArrayList<Item> items;
 
-    public Inventory() {
+    public Inventory(boolean seedFakedData) {
         items = new ArrayList<Item>();    // inti array
+
+        if (seedFakedData) {
+            seedItems();
+        }
     }
 
     public Item createNewItem(String name, double price) throws NameAlreadyExists {
@@ -42,5 +46,15 @@ public class Inventory {
         return items;
     }
 
+    private void seedItems() {
+        Item item;
+        item = new Item("Shirt", 12.57);
+        items.add(item);
 
+        item = new Item("Pants", 45.83);
+        items.add(item);
+
+        item = new Item("Socks", 3.75);
+        items.add(item);
+    }
 }

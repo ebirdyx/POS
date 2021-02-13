@@ -6,6 +6,8 @@ import errors.NameAlreadyExists;
 import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
 
+import java.util.List;
+
 public class InventoryController {
     private Inventory inventory;
 
@@ -29,5 +31,8 @@ public class InventoryController {
         return this.inventory.createNewItem(name, price);
     }
 
+    public List<Item> getItems() {
+        return this.inventory.getItems();
+    }
 }
 

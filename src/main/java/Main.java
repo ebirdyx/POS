@@ -4,7 +4,7 @@ import views.Console;
 
 public class Main {
     public static void main(String[] args){
-        Inventory inv = new Inventory();
+        Inventory inv = new Inventory(true);
         InventoryController inventoryController = new InventoryController(inv);
         Console console = new Console(inventoryController);
         console.run();
