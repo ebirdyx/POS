@@ -47,15 +47,19 @@ public class Console {
         //  ask the user for name
         String name = getUserInput("Please enter the item's name: ");
 
+        // ask the user for cost
+        String costString = getUserInput("Please enter the item's cost: ");
+
         // ask the user for price
         String priceString = getUserInput("Please enter the item's price: ");
 
         // convert price to double
+        double cost = Converters.stringToDouble(costString);
         double price = Converters.stringToDouble(priceString);
 
         //create new item with userInput
         try {
-            Item newItem = this.posController.createNewItem(name, price);
+            Item newItem = this.posController.createNewItem(name, cost, price);
             System.out.println(newItem.toString());
         }catch(PriceCannotBeNegative e){
             System.out.println("Price cannot be negative.");
@@ -65,6 +69,9 @@ public class Console {
             createItemMenu();
         } catch (ItemNameAlreadyExists e) {
             System.out.println("Name already exists.");
+            createItemMenu();
+        } catch (ItemPriceShouldBeGreaterThanCost itemPriceShouldBeGreaterThanCost) {
+            System.out.println("Item price should be greater than cost.");
             createItemMenu();
         }
 

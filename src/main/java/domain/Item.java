@@ -7,12 +7,14 @@ import static utils.Randomizer.generateRandomString;
 public class Item implements SerializableData {
     private String code;
     private String name;
+    private double cost;
     private double price;
     private int quantity;
     private int soldQuantity;
 
-    public Item(String name, double price) {
+    public Item(String name, double cost, double price) {
         this.name = name;
+        this.cost = cost;
         this.price = price;
         this.code = generateRandomString(3);
     }
@@ -39,6 +41,9 @@ public class Item implements SerializableData {
         this.price = price;
     }
 
+    public double getCost() {
+        return cost;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -91,6 +96,7 @@ public class Item implements SerializableData {
         return "Item{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", cost=" + cost +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", soldQuantity=" + soldQuantity +

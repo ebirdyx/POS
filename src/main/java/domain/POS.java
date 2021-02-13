@@ -43,14 +43,14 @@ public class POS {
      * @return
      * @throws ItemNameAlreadyExists
      */
-    public Item createNewItem(String name, double price) throws ItemNameAlreadyExists {
+    public Item createNewItem(String name, double cost, double price) throws ItemNameAlreadyExists {
         // check if an item with the same name already exists
         if (itemNameExists(name)) {
             throw new ItemNameAlreadyExists();
         }
 
         //create item
-        Item item = new Item(name, price);
+        Item item = new Item(name, cost, price);
 
         //add item to inventory
         items.add(item);
@@ -183,13 +183,13 @@ public class POS {
      */
     private void seedItems() {
         Item item;
-        item = new Item("Shirt", 12.57);
+        item = new Item("Shirt", 12.57, 20.85);
         items.add(item);
 
-        item = new Item("Pants", 45.83);
+        item = new Item("Pants", 45.83, 80.28);
         items.add(item);
 
-        item = new Item("Socks", 3.75);
+        item = new Item("Socks", 3.75, 12.58);
         items.add(item);
     }
 
