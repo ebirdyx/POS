@@ -4,11 +4,11 @@ import errors.NameAlreadyExists;
 
 import java.util.ArrayList;
 
-public class Inventory {
+public class POS {
 
     private ArrayList<Item> items;
 
-    public Inventory(boolean seedFakedData) {
+    public POS(boolean seedFakedData) {
         items = new ArrayList<Item>();    // inti array
 
         if (seedFakedData) {
