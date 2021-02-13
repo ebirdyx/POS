@@ -10,7 +10,7 @@ public class Inventory {
         items = new ArrayList<Item>();    // inti array
     }
 
-    public String createNewItem(String name, double price) {
+    public Item createNewItem(String name, double price) {
         //create item
         Item item = new Item(name,price);
 
@@ -18,7 +18,7 @@ public class Inventory {
         items.add(item);
 
         //return generated code of the new item
-        return item.getCode();
+        return item;
     }
 
     public ArrayList<Item> getItems() {

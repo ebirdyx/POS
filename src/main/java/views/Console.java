@@ -1,6 +1,7 @@
 package views;
 
 import controllers.InventoryController;
+import domain.Item;
 import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
 import utils.Converters;
@@ -37,7 +38,8 @@ public class Console {
 
         //create new item with userInput
         try {
-            this.inventoryController.createNewItem(name, price);
+            Item newItem = this.inventoryController.createNewItem(name, price);
+            System.out.println(newItem.toString());
         }catch(PriceCannotBeNegative e){
             System.out.println("Price cannot be negative.");
             createItemMenu();
@@ -52,7 +54,7 @@ public class Console {
         System.out.println("POS system");
         System.out.println("1. Create new Item");
         System.out.println("2. List Items ");
-        System.out.println("3. Add qty to inventory");
+        System.out.println("3. Add quantity to inventory");
         System.out.println("4. Sell item");
         System.out.println("5. Quit ");
 

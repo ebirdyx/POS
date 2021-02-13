@@ -13,9 +13,7 @@ public class Item {
         this.name = name;
         this.price = price;
         this.code = generateRandomString(8);
-
     }
-
 
     public String getName() {
         return name;
@@ -55,4 +53,14 @@ public class Item {
         return code;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", soldQuantity=" + soldQuantity +
+                '}';
+    }
 }

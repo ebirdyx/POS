@@ -12,7 +12,7 @@ public class InventoryController {
         this.inventory = inventory;
     }
 
-    public String createNewItem(String name, double price)
+    public Item createNewItem(String name, double price)
             throws PriceCannotBeNegative, NameCannotBeEmpty {
 
         //price cant be negative
