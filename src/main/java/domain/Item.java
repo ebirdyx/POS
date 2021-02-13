@@ -1,5 +1,9 @@
 package domain;
 
+import utils.Converters;
+
+import java.util.List;
+
 import static utils.Randomizer.generateRandomString;
 
 public class Item {
@@ -13,6 +17,12 @@ public class Item {
         this.name = name;
         this.price = price;
         this.code = generateRandomString(3);
+    }
+
+    private Item(String code, String name, double price) {
+        this.name = name;
+        this.price = price;
+        this.code = code;
     }
 
     public String getName() {
@@ -51,6 +61,30 @@ public class Item {
 
     public String getCode() {
         return code;
+    }
+
+    /**
+     * Convert an item into a string form of itself that can be saved
+     * @return
+     */
+    public String serializeItem() {
+        return code + ";" + price + ";" + name + ";" + quantity + ";" + soldQuantity;
+    }
+
+    public static Item deserializeItem(String s) {
+        String[] sParts = s.split(";");
+
+        String c = sParts[0];
+        double p = Converters.stringToDouble(sParts[1]);
+        String n = sParts[2];
+        int q = Converters.stringToInteger(sParts[3]);
+        int soldQ = Converters.stringToInteger(sParts[4]);
+
+        Item item = new Item(c, n, p);
+        item.quantity = q;
+        item.soldQuantity = soldQ;
+
+        return item;
     }
 
     @Override

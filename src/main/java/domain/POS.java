@@ -3,19 +3,27 @@ package domain;
 import errors.ItemNotFound;
 import errors.NameAlreadyExists;
 import errors.NotEnoughItemQuantity;
+import store.Store;
 
 import java.util.ArrayList;
 
 public class POS {
 
     private ArrayList<Item> items;
+    private Store store;
 
-    public POS(boolean seedFakedData) {
-        items = new ArrayList<Item>();    // inti array
+    public POS(Store store) {
+        this.store = store;
 
-        if (seedFakedData) {
+        // inventory of items
+        items = new ArrayList<Item>();
+
+        // loading data from store
+        loadData();
+
+        // seed fake data if items array is empty after loadData
+        if (items.size() == 0)
             seedItems();
-        }
     }
 
     public Item createNewItem(String name, double price) throws NameAlreadyExists {
@@ -29,6 +37,8 @@ public class POS {
 
         //add item to inventory
         items.add(item);
+
+        saveData();
 
         //return generated code of the new item
         return item;
@@ -66,6 +76,8 @@ public class POS {
         }
 
         item.addQuantity(quantity);
+
+        saveData();
     }
 
     public void sellItemQuantity(String itemCode, int quantity)
@@ -81,6 +93,8 @@ public class POS {
         }
 
         item.sellItem(quantity);
+
+        saveData();
     }
 
     private void seedItems() {
@@ -93,5 +107,24 @@ public class POS {
 
         item = new Item("Socks", 3.75);
         items.add(item);
+    }
+
+    public void loadData() {
+         String[] serializedItems = store.loadData();
+
+        for (int i = 0; i < serializedItems.length; i++) {
+            Item item = Item.deserializeItem(serializedItems[i]);
+            items.add(item);
+        }
+    }
+
+    public void saveData() {
+        String[] serializedItems = new String[items.size()];
+
+        for (int i = 0; i < items.size(); i++) {
+            serializedItems[i] = items.get(i).serializeItem();
+        }
+
+        store.saveData(serializedItems);
     }
 }
