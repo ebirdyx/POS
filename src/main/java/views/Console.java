@@ -2,10 +2,7 @@ package views;
 
 import controllers.InventoryController;
 import domain.Item;
-import errors.ItemNotFound;
-import errors.NameAlreadyExists;
-import errors.NameCannotBeEmpty;
-import errors.PriceCannotBeNegative;
+import errors.*;
 import utils.Converters;
 
 import java.util.List;
@@ -86,6 +83,21 @@ public class Console {
         System.out.println();
     }
 
+    public void sellItemMenu() {
+        displayTitle("Sell item menu");
+        displayInventoryItems();
+        String codeItem = getUserInput("Please enter item code: ");
+        String quantityString = getUserInput("Please enter quantity to sell: ");
+        try {
+            this.inventoryController.sellItemQuantity(codeItem, Converters.stringToInteger(quantityString));
+            System.out.println("Item quantity successfully sold!");
+        } catch (ItemNotFound itemNotFound) {
+            System.out.println("I was not able to find your item");
+        } catch (NotEnoughItemQuantity notEnoughItemQuantity) {
+            System.out.println("Not enough quantity");
+        }
+    }
+
     public void displayMainMenu() {
         displayTitle("POS system");
         System.out.println("1. Create new Item");
@@ -105,6 +117,7 @@ public class Console {
                 addQuantityToItemMenu();
                 break;
             case "4":
+                sellItemMenu();
                 break;
             case "5":
                 System.out.println("GOODBYE");

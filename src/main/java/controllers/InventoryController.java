@@ -2,10 +2,7 @@ package controllers;
 
 import domain.POS;
 import domain.Item;
-import errors.ItemNotFound;
-import errors.NameAlreadyExists;
-import errors.NameCannotBeEmpty;
-import errors.PriceCannotBeNegative;
+import errors.*;
 
 import java.util.List;
 
@@ -38,6 +35,11 @@ public class InventoryController {
 
     public void addQuantityToItem(String codeItem, int quantity) throws ItemNotFound {
         this.pos.addQuantityToItem(codeItem, quantity);
+    }
+
+    public void sellItemQuantity(String itemCode, int quantity)
+            throws ItemNotFound, NotEnoughItemQuantity {
+        this.pos.sellItemQuantity(itemCode, quantity);
     }
 }
 

@@ -2,6 +2,7 @@ package domain;
 
 import errors.ItemNotFound;
 import errors.NameAlreadyExists;
+import errors.NotEnoughItemQuantity;
 
 import java.util.ArrayList;
 
@@ -43,19 +44,43 @@ public class POS {
         return false;
     }
 
+    private Item getItemByCode(String code) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getCode().equals(code)) {
+                return items.get(i);
+            }
+        }
+
+        return null;
+    }
+
     public ArrayList<Item> getItems() {
         return items;
     }
 
     public void addQuantityToItem(String itemCode, int quantity) throws ItemNotFound {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getCode().equals(itemCode)) {
-                items.get(i).addQuantity(quantity);
-                return;
-            }
+        Item item = getItemByCode(itemCode);
+
+        if (item == null) {
+            throw new ItemNotFound();
         }
 
-        throw new ItemNotFound();
+        item.addQuantity(quantity);
+    }
+
+    public void sellItemQuantity(String itemCode, int quantity)
+            throws ItemNotFound, NotEnoughItemQuantity {
+        Item item = getItemByCode(itemCode);
+
+        if (item == null) {
+            throw new ItemNotFound();
+        }
+
+        if (item.getQuantity() < quantity) {
+            throw new NotEnoughItemQuantity();
+        }
+
+        item.sellItem(quantity);
     }
 
     private void seedItems() {
