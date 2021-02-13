@@ -26,6 +26,13 @@ public class POS {
             seedItems();
     }
 
+    /**
+     * Create a new Item type in the inventory
+     * @param name
+     * @param price
+     * @return
+     * @throws NameAlreadyExists
+     */
     public Item createNewItem(String name, double price) throws NameAlreadyExists {
         // check if an item with the same name already exists
         if (nameExists(name)) {
@@ -44,6 +51,11 @@ public class POS {
         return item;
     }
 
+    /**
+     * Checks if an Item name already exists
+     * @param name
+     * @return
+     */
     private boolean nameExists(String name) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getName().equals(name)) {
@@ -54,6 +66,11 @@ public class POS {
         return false;
     }
 
+    /**
+     * Returns item matching code
+     * @param code
+     * @return
+     */
     private Item getItemByCode(String code) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getCode().equals(code)) {
@@ -64,10 +81,20 @@ public class POS {
         return null;
     }
 
+    /**
+     * Return items in inventory
+     * @return
+     */
     public ArrayList<Item> getItems() {
         return items;
     }
 
+    /**
+     * Add additional quantity to an Item
+     * @param itemCode
+     * @param quantity
+     * @throws ItemNotFound
+     */
     public void addQuantityToItem(String itemCode, int quantity) throws ItemNotFound {
         Item item = getItemByCode(itemCode);
 
@@ -80,6 +107,13 @@ public class POS {
         saveData();
     }
 
+    /**
+     * Sell quantity of an Item
+     * @param itemCode
+     * @param quantity
+     * @throws ItemNotFound
+     * @throws NotEnoughItemQuantity
+     */
     public void sellItemQuantity(String itemCode, int quantity)
             throws ItemNotFound, NotEnoughItemQuantity {
         Item item = getItemByCode(itemCode);
@@ -97,6 +131,9 @@ public class POS {
         saveData();
     }
 
+    /**
+     * Seed inventory with fake data
+     */
     private void seedItems() {
         Item item;
         item = new Item("Shirt", 12.57);
@@ -109,6 +146,9 @@ public class POS {
         items.add(item);
     }
 
+    /**
+     * Load data into inventory from store
+     */
     public void loadData() {
          String[] serializedItems = store.loadData();
 
@@ -118,6 +158,9 @@ public class POS {
         }
     }
 
+    /**
+     * Save inventory data using a store
+     */
     public void saveData() {
         String[] serializedItems = new String[items.size()];
 

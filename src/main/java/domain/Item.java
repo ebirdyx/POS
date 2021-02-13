@@ -2,8 +2,6 @@ package domain;
 
 import utils.Converters;
 
-import java.util.List;
-
 import static utils.Randomizer.generateRandomString;
 
 public class Item {
