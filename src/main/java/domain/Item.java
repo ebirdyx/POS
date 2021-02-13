@@ -4,7 +4,7 @@ import utils.Converters;
 
 import static utils.Randomizer.generateRandomString;
 
-public class Item {
+public class Item implements SerializableData {
     private String code;
     private String name;
     private double price;
@@ -65,22 +65,23 @@ public class Item {
      * Convert an item into a string form of itself that can be saved
      * @return
      */
-    public String serializeItem() {
+    @Override
+    public String serialize() {
         return code + ";" + price + ";" + name + ";" + quantity + ";" + soldQuantity;
     }
 
     public static Item deserializeItem(String s) {
         String[] sParts = s.split(";");
 
-        String c = sParts[0];
-        double p = Converters.stringToDouble(sParts[1]);
-        String n = sParts[2];
-        int q = Converters.stringToInteger(sParts[3]);
-        int soldQ = Converters.stringToInteger(sParts[4]);
+        String code = sParts[0];
+        double price = Converters.stringToDouble(sParts[1]);
+        String name = sParts[2];
+        int quanity = Converters.stringToInteger(sParts[3]);
+        int soldQuantity = Converters.stringToInteger(sParts[4]);
 
-        Item item = new Item(c, n, p);
-        item.quantity = q;
-        item.soldQuantity = soldQ;
+        Item item = new Item(code, name, price);
+        item.quantity = quanity;
+        item.soldQuantity = soldQuantity;
 
         return item;
     }

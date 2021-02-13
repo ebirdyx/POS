@@ -66,6 +66,6 @@ public class FileStore implements Store {
             return new String[0];
         }
 
-        return (String[]) lines.toArray();
+        return lines.toArray(new String[lines.size()]);
     }
 }

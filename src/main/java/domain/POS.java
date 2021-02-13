@@ -1,15 +1,17 @@
 package domain;
 
-import errors.ItemNotFound;
-import errors.NameAlreadyExists;
-import errors.NotEnoughItemQuantity;
+import errors.*;
 import store.Store;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class POS {
 
     private ArrayList<Item> items;
+    private ArrayList<User> users;
+
     private Store store;
 
     public POS(Store store) {
@@ -17,6 +19,7 @@ public class POS {
 
         // inventory of items
         items = new ArrayList<Item>();
+        users = new ArrayList<User>();
 
         // loading data from store
         loadData();
@@ -24,6 +27,13 @@ public class POS {
         // seed fake data if items array is empty after loadData
         if (items.size() == 0)
             seedItems();
+
+        // seed fake data if items array is empty after loadData
+        if (users.size() == 0)
+            seedUsers();
+
+        // save data to store
+        saveData();
     }
 
     /**
@@ -31,12 +41,12 @@ public class POS {
      * @param name
      * @param price
      * @return
-     * @throws NameAlreadyExists
+     * @throws ItemNameAlreadyExists
      */
-    public Item createNewItem(String name, double price) throws NameAlreadyExists {
+    public Item createNewItem(String name, double price) throws ItemNameAlreadyExists {
         // check if an item with the same name already exists
-        if (nameExists(name)) {
-            throw new NameAlreadyExists();
+        if (itemNameExists(name)) {
+            throw new ItemNameAlreadyExists();
         }
 
         //create item
@@ -51,14 +61,37 @@ public class POS {
         return item;
     }
 
+    public User createNewUser(String firstName, String lastName, String pin) throws UserPinAlreadyExists {
+        if (userPinExists(pin)) {
+            throw new UserPinAlreadyExists();
+        }
+
+        User user = new User(firstName, lastName, pin);
+        users.add(user);
+
+        saveData();
+
+        return user;
+    }
+
     /**
      * Checks if an Item name already exists
      * @param name
      * @return
      */
-    private boolean nameExists(String name) {
+    private boolean itemNameExists(String name) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getName().equals(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean userPinExists(String pin) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getPin().equals(pin)) {
                 return true;
             }
         }
@@ -87,6 +120,20 @@ public class POS {
      */
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public User authenticate(String pin) throws InvalidPinNumber {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).authenticate(pin)) {
+                return users.get(i);
+            }
+        }
+
+        throw new InvalidPinNumber();
     }
 
     /**
@@ -147,27 +194,73 @@ public class POS {
     }
 
     /**
+     * Seed users with fake data
+     */
+    private void seedUsers() {
+        User user;
+        user = new User("Pamela", "Brahollari", "354");
+        users.add(user);
+
+        user = new User("Rebekah", "Cala", "579");
+        users.add(user);
+
+        user = new User("Emy", "Lela", "234");
+        users.add(user);
+    }
+
+    /**
      * Load data into inventory from store
      */
     public void loadData() {
          String[] serializedItems = store.loadData();
 
         for (int i = 0; i < serializedItems.length; i++) {
-            Item item = Item.deserializeItem(serializedItems[i]);
-            items.add(item);
+            String[] sParts = serializedItems[i].split(";");
+            String typeOfData = sParts[0];
+            String data = String.join(";", Arrays.copyOfRange(sParts, 1, sParts.length));
+
+            switch (typeOfData) {
+                case "Item":
+                    loadItem(data);
+                case "User":
+                    loadUser(data);
+            }
         }
+    }
+
+    private void loadItem(String s) {
+        Item item = Item.deserializeItem(s);
+        items.add(item);
+    }
+
+    private void loadUser(String s) {
+        User user = User.deserializeUser(s);
+        users.add(user);
     }
 
     /**
      * Save inventory data using a store
      */
     public void saveData() {
-        String[] serializedItems = new String[items.size()];
+        List<String> serializedData = new ArrayList<String>();
 
-        for (int i = 0; i < items.size(); i++) {
-            serializedItems[i] = items.get(i).serializeItem();
+        serializedData.addAll(getData("User", users));
+        serializedData.addAll(getData("Item", items));
+
+        store.saveData(serializedData.toArray(new String[serializedData.size()]));
+    }
+
+    private List<String> getData(String dataType, List data) {
+        List<String> serializedData = new ArrayList<>();
+
+        for (int i = 0; i < data.size(); i++) {
+            // Cast data element to a Serializable data type
+            SerializableData serializableData = (SerializableData) data.get(i);
+
+            // Create a serialized data prefixed with type
+            serializedData.add(dataType + ";" + serializableData.serialize());
         }
 
-        store.saveData(serializedItems);
+        return serializedData;
     }
 }

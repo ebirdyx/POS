@@ -2,19 +2,20 @@ package controllers;
 
 import domain.POS;
 import domain.Item;
+import domain.User;
 import errors.*;
 
 import java.util.List;
 
-public class InventoryController {
+public class posController {
     private POS pos;
 
-    public InventoryController(POS pos) {
+    public posController(POS pos) {
         this.pos = pos;
     }
 
     public Item createNewItem(String name, double price)
-            throws PriceCannotBeNegative, NameCannotBeEmpty, NameAlreadyExists {
+            throws PriceCannotBeNegative, NameCannotBeEmpty, ItemNameAlreadyExists {
 
         //price cant be negative
         if (price <= 0) {
@@ -31,6 +32,14 @@ public class InventoryController {
 
     public List<Item> getItems() {
         return this.pos.getItems();
+    }
+
+    public List<User> getUsers() {
+        return this.pos.getUsers();
+    }
+
+    public User authenticate(String pin) throws InvalidPinNumber {
+        return this.pos.authenticate(pin);
     }
 
     public void addQuantityToItem(String codeItem, int quantity) throws ItemNotFound {

@@ -1,4 +1,4 @@
-import controllers.InventoryController;
+import controllers.posController;
 import domain.POS;
 import store.FileStore;
 import store.Store;
@@ -8,8 +8,8 @@ public class Main {
     public static void main(String[] args) {
         Store fileStore = new FileStore("db.txt");
         POS pos = new POS(fileStore);
-        InventoryController inventoryController = new InventoryController(pos);
-        Console console = new Console(inventoryController);
+        posController posController = new posController(pos);
+        Console console = new Console(posController);
         console.run();
     }
 }
