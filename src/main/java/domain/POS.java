@@ -1,5 +1,6 @@
 package domain;
 
+import errors.ItemNotFound;
 import errors.NameAlreadyExists;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class POS {
         }
 
         //create item
-        Item item = new Item(name,price);
+        Item item = new Item(name, price);
 
         //add item to inventory
         items.add(item);
@@ -44,6 +45,17 @@ public class POS {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public void addQuantityToItem(String itemCode, int quantity) throws ItemNotFound {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getCode().equals(itemCode)) {
+                items.get(i).addQuantity(quantity);
+                return;
+            }
+        }
+
+        throw new ItemNotFound();
     }
 
     private void seedItems() {

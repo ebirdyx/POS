@@ -2,6 +2,7 @@ package views;
 
 import controllers.InventoryController;
 import domain.Item;
+import errors.ItemNotFound;
 import errors.NameAlreadyExists;
 import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
@@ -26,7 +27,7 @@ public class Console {
 
     public void createItemMenu() {
         //  show item menu
-        System.out.println("Create new item Menu");
+        displayTitle("Create new item Menu");
 
         // some logic to get item name and price from user
         //  ask the user for name
@@ -55,17 +56,38 @@ public class Console {
     }
 
     public void displayInventoryItems() {
+        displayTitle("Listing of inventory menu:");
+
         List<Item> items = this.inventoryController.getItems();
         //  show item menu
-        System.out.println("Listing of inventory menu:");
         for (int i = 0; i < items.size(); i++) {
             System.out.println(items.get(i).toString());
         }
     }
 
-    public void displayMainMenu() {
+    public void addQuantityToItemMenu() {
+        displayTitle("Add quantity to item menu:");
+        displayInventoryItems();
+        String codeItem = getUserInput("Please enter item code: ");
+        String quantityString = getUserInput("Please enter quantity to add: ");
+        try {
+            this.inventoryController.addQuantityToItem(codeItem, Converters.stringToInteger(quantityString));
+            System.out.println("Item quantity successfully added!");
+        } catch (ItemNotFound itemNotFound) {
+            System.out.println("I was not able to find your item");
+        }
+    }
 
-        System.out.println("POS system");
+    public void displayTitle(String msg) {
+        System.out.println(msg);
+        for (int i = 0; i < msg.length(); i++) {
+            System.out.print("*");
+        }
+        System.out.println();
+    }
+
+    public void displayMainMenu() {
+        displayTitle("POS system");
         System.out.println("1. Create new Item");
         System.out.println("2. List Items ");
         System.out.println("3. Add quantity to inventory");
@@ -75,13 +97,12 @@ public class Console {
         switch (getUserInput("Please choose an option: ")) {
             case "1":
                 createItemMenu();
-                displayMainMenu();
                 break;
             case "2":
                 displayInventoryItems();
-                displayMainMenu();
                 break;
             case "3":
+                addQuantityToItemMenu();
                 break;
             case "4":
                 break;
@@ -90,8 +111,9 @@ public class Console {
                 return;
             default:
                 System.out.println("Invalid Input");
-                displayMainMenu();
         }
+
+        displayMainMenu();
     }
 
     public String getUserInput(String msg) {
@@ -100,6 +122,4 @@ public class Console {
         String UserInput = scanner.next();
         return UserInput;
     }
-
-
 }

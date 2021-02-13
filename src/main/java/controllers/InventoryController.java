@@ -2,6 +2,7 @@ package controllers;
 
 import domain.POS;
 import domain.Item;
+import errors.ItemNotFound;
 import errors.NameAlreadyExists;
 import errors.NameCannotBeEmpty;
 import errors.PriceCannotBeNegative;
@@ -9,10 +10,10 @@ import errors.PriceCannotBeNegative;
 import java.util.List;
 
 public class InventoryController {
-    private POS POS;
+    private POS pos;
 
-    public InventoryController(POS POS) {
-        this.POS = POS;
+    public InventoryController(POS pos) {
+        this.pos = pos;
     }
 
     public Item createNewItem(String name, double price)
@@ -28,11 +29,15 @@ public class InventoryController {
             throw new NameCannotBeEmpty();
         }
 
-        return this.POS.createNewItem(name, price);
+        return this.pos.createNewItem(name, price);
     }
 
     public List<Item> getItems() {
-        return this.POS.getItems();
+        return this.pos.getItems();
+    }
+
+    public void addQuantityToItem(String codeItem, int quantity) throws ItemNotFound {
+        this.pos.addQuantityToItem(codeItem, quantity);
     }
 }
 

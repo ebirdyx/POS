@@ -12,7 +12,7 @@ public class Item {
     public Item(String name, double price) {
         this.name = name;
         this.price = price;
-        this.code = generateRandomString(8);
+        this.code = generateRandomString(3);
     }
 
     public String getName() {
