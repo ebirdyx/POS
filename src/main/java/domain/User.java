@@ -22,6 +22,10 @@ public class User implements SerializableData {
         this.code = code;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     @Override
     public String toString() {
         return "User{" +

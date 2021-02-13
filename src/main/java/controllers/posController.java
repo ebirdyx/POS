@@ -2,6 +2,7 @@ package controllers;
 
 import domain.POS;
 import domain.Item;
+import domain.Sale;
 import domain.User;
 import errors.*;
 
@@ -50,9 +51,9 @@ public class posController {
         this.pos.addQuantityToItem(codeItem, quantity);
     }
 
-    public void sellItemQuantity(String itemCode, int quantity)
+    public Sale sellItemQuantity(User user, String itemCode, int quantity)
             throws ItemNotFound, NotEnoughItemQuantity {
-        this.pos.sellItemQuantity(itemCode, quantity);
+        return this.pos.sellItemQuantity(user, itemCode, quantity);
     }
 }
 

@@ -2,6 +2,7 @@ package views;
 
 import controllers.posController;
 import domain.Item;
+import domain.Sale;
 import domain.User;
 import errors.*;
 import utils.Converters;
@@ -119,7 +120,8 @@ public class Console {
         String codeItem = getUserInput("Please enter item code: ");
         String quantityString = getUserInput("Please enter quantity to sell: ");
         try {
-            this.posController.sellItemQuantity(codeItem, Converters.stringToInteger(quantityString));
+            Sale sale = this.posController.sellItemQuantity(user, codeItem, Converters.stringToInteger(quantityString));
+            System.out.println(sale.toString());
             System.out.println("Item quantity successfully sold!");
         } catch (ItemNotFound itemNotFound) {
             System.out.println("I was not able to find your item");

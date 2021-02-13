@@ -11,6 +11,7 @@ public class POS {
 
     private ArrayList<Item> items;
     private ArrayList<User> users;
+    private ArrayList<Sale> sales;
 
     private Store store;
 
@@ -20,6 +21,7 @@ public class POS {
         // inventory of items
         items = new ArrayList<Item>();
         users = new ArrayList<User>();
+        sales = new ArrayList<Sale>();
 
         // loading data from store
         loadData();
@@ -31,6 +33,10 @@ public class POS {
         // seed fake data if items array is empty after loadData
         if (users.size() == 0)
             seedUsers();
+
+        // seed fake data if items array is empty after loadData
+        if (sales.size() == 0)
+            seedSales();
 
         // save data to store
         saveData();
@@ -161,7 +167,7 @@ public class POS {
      * @throws ItemNotFound
      * @throws NotEnoughItemQuantity
      */
-    public void sellItemQuantity(String itemCode, int quantity)
+    public Sale sellItemQuantity(User user, String itemCode, int quantity)
             throws ItemNotFound, NotEnoughItemQuantity {
         Item item = getItemByCode(itemCode);
 
@@ -175,7 +181,12 @@ public class POS {
 
         item.sellItem(quantity);
 
+        Sale sale = new Sale(user, item, quantity);
+        sales.add(sale);
+
         saveData();
+
+        return sale;
     }
 
     /**
@@ -184,12 +195,15 @@ public class POS {
     private void seedItems() {
         Item item;
         item = new Item("Shirt", 12.57, 20.85);
+        item.addQuantity(250);
         items.add(item);
 
         item = new Item("Pants", 45.83, 80.28);
+        item.addQuantity(467);
         items.add(item);
 
         item = new Item("Socks", 3.75, 12.58);
+        item.addQuantity(385);
         items.add(item);
     }
 
@@ -208,6 +222,18 @@ public class POS {
         users.add(user);
     }
 
+    private void seedSales() {
+        int quantitySample = 6;
+
+        for (int i = 0; i < users.size(); i++) {
+            for (int j = 0; j < items.size(); j++) {
+                items.get(j).sellItem(quantitySample);
+                Sale sale = new Sale(users.get(i), items.get(j), quantitySample);
+                sales.add(sale);
+            }
+        }
+    }
+
     /**
      * Load data into inventory from store
      */
@@ -222,8 +248,13 @@ public class POS {
             switch (typeOfData) {
                 case "Item":
                     loadItem(data);
+                    break;
                 case "User":
                     loadUser(data);
+                    break;
+                case "Sale":
+                    loadSale(data);
+                    break;
             }
         }
     }
@@ -238,6 +269,16 @@ public class POS {
         users.add(user);
     }
 
+    private void loadSale(String s) {
+        Sale sale = null;
+        try {
+            sale = Sale.deserialize(s, users, items);
+        } catch (ErrorDeserializingData errorDeserializingData) {
+            errorDeserializingData.printStackTrace();
+        }
+        sales.add(sale);
+    }
+
     /**
      * Save inventory data using a store
      */
@@ -246,6 +287,7 @@ public class POS {
 
         serializedData.addAll(getData("User", users));
         serializedData.addAll(getData("Item", items));
+        serializedData.addAll(getData("Sale", sales));
 
         store.saveData(serializedData.toArray(new String[serializedData.size()]));
     }
