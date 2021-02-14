@@ -143,7 +143,8 @@ public class Console {
 
         System.out.println();
     }
-    public void createNewUserMenu(){
+
+    public void createNewUser() {
         displayTitle("Add new user");
 
         String firstName = getUserInput("Please enter the user's first name: ");
@@ -155,19 +156,37 @@ public class Console {
 
         User newUser = null;
         try {
-            newUser = this.posController.createNewUser(firstName,lastName,pin, role);
+            newUser = this.posController.createNewUser(firstName, lastName, pin, role);
         } catch (NameCannotBeEmpty nameCannotBeEmpty) {
             System.out.println("First name and last name cannot be empty.");
-            createNewUserMenu();
+            createNewUser();
         } catch (UserPinAlreadyExists userPinAlreadyExists) {
             System.out.println("User pin already exists.");
-            createNewUserMenu();
+            createNewUser();
         } catch (PinCannotBeEmpty pinCannotBeEmpty) {
             System.out.println("User pin cannot be empty.");
-            createNewUserMenu();
+            createNewUser();
         }
         System.out.println(newUser.toString());
     }
+
+    public void listUsers() {
+        displayTitle("list of Users:");
+
+        List<User> users = this.posController.getUsers();
+        //  show users
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).toString());
+        }
+
+        System.out.println();
+    }
+
+    public void disableUser() {
+
+    }
+    //TODO sort items according to sales
+    //TODO sort sellers according to sales
 
     public void manageUsersMenu() {
         displayTitle("Manage users");
@@ -179,11 +198,22 @@ public class Console {
 
         switch (getUserInput("Please choose an option: ").toLowerCase()) {
             case "1":
-                createNewUserMenu();
+                createNewUser();
                 break;
             case "2":
-              //  disableUser();
+                //  disableUser();
                 break;
+            case "3":
+                listUsers();
+                break;
+            case "4":
+                //  changeUserRoleMenu();
+                break;
+            case "m":
+                displayMainMenu();
+            default:
+                System.out.println("Invalid Input");
+
         }
     }
 

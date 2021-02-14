@@ -8,6 +8,7 @@ public class User implements SerializableData {
     private String lastName;
     private String pin;
     private Role role;
+    private UserStatus status;
 
     public User(String firstName, String lastName, String pin, Role role) {
         this.firstName = firstName;
@@ -15,14 +16,16 @@ public class User implements SerializableData {
         this.pin = pin;
         this.code = Randomizer.generateRandomString(3);
         this.role = role;
+        this.status = UserStatus.ENABLED;
     }
 
-    private User(String code, String firstName, String lastName, String pin, Role role) {
+    private User(String code, String firstName, String lastName, String pin, Role role, UserStatus status) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pin = pin;
         this.code = code;
         this.role = role;
+        this.status = status;
     }
 
     public Role getRole() {
@@ -43,7 +46,16 @@ public class User implements SerializableData {
                 "code='" + code + '\'' +
                 ", fullName='" + getUserFullName() + '\'' +
                 ", role='" + role + '\'' +
+                ", status='" + status + '\'' +
                 '}';
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public String getPin() {
@@ -55,12 +67,13 @@ public class User implements SerializableData {
     }
 
     public boolean authenticate(String pin) {
-        return this.pin.equals(pin);
+        return this.pin.equals(pin) && this.status == UserStatus.ENABLED;
     }
+
 
     @Override
     public String serialize() {
-        return code + ";" + firstName + ";" + lastName + ";" + pin + ";" + role;
+        return code + ";" + firstName + ";" + lastName + ";" + pin + ";" + role + ";" + status;
     }
 
     public static User deserializeUser(String s) {
@@ -71,8 +84,9 @@ public class User implements SerializableData {
         String lastName = sParts[2];
         String pin = sParts[3];
         Role role = Role.valueOf(sParts[4]);
+        UserStatus status = UserStatus.valueOf(sParts[5]);
 
-        User user = new User(code, firstName, lastName, pin, role);
+        User user = new User(code, firstName, lastName, pin, role, status);
         return user;
     }
 }
