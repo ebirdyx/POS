@@ -156,6 +156,7 @@ public class POS {
             throw new UserNotFound();
         }
         user.switchStatus();
+        saveData();
         return user;
     }
     public User changeUserRole(String code) throws UserNotFound {
@@ -164,6 +165,7 @@ public class POS {
             throw new UserNotFound();
         }
         user.changeUserRole();
+        saveData();
         return user;
     }
 
