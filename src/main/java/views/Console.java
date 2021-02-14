@@ -171,7 +171,7 @@ public class Console {
     }
 
     public void listUsers() {
-        displayTitle("list of Users:");
+        displayTitle("List of Users:");
 
         List<User> users = this.posController.getUsers();
         //  show users
@@ -182,8 +182,17 @@ public class Console {
         System.out.println();
     }
 
-    public void disableUser() {
+    public void switchUserStatus() {
+        displayTitle("Switch user status");
+        listUsers();
 
+        String code = getUserInput("Enter the user's code ");
+         // setstatus
+        try {
+            this.posController.switchUserStatus(code);
+        } catch (UserNotFound userNotFound) {
+            System.out.println("User code not found.");
+        }
     }
     //TODO sort items according to sales
     //TODO sort sellers according to sales
@@ -191,7 +200,7 @@ public class Console {
     public void manageUsersMenu() {
         displayTitle("Manage users");
         System.out.println("1. Add user");
-        System.out.println("2. Disable user");
+        System.out.println("2. Switch user status");
         System.out.println("3. List users");
         System.out.println("4. Change user role");
         System.out.println("m. Main menu");
@@ -201,7 +210,7 @@ public class Console {
                 createNewUser();
                 break;
             case "2":
-                //  disableUser();
+                switchUserStatus();
                 break;
             case "3":
                 listUsers();

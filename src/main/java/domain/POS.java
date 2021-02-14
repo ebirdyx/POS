@@ -123,6 +123,16 @@ public class POS {
         return null;
     }
 
+    public User getUserByCode(String code) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getCode().equals(code)) {
+                return users.get(i);
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Return items in inventory
      *
@@ -138,6 +148,15 @@ public class POS {
 
     public ArrayList<Sale> getSales() {
         return sales;
+    }
+
+    public User switchUserStatus(String code) throws UserNotFound {
+        User user = getUserByCode(code);
+        if (user == null) {
+            throw new UserNotFound();
+        }
+        user.switchStatus();
+        return user;
     }
 
     public User authenticate(String pin) throws InvalidPinNumber {
@@ -222,10 +241,10 @@ public class POS {
      */
     private void seedUsers() {
         User user;
-        user = new User("Pamela", "Brahollari", "354" , Role.ADMIN);
+        user = new User("Pamela", "Brahollari", "354", Role.ADMIN);
         users.add(user);
 
-        user = new User("Rebekah", "Cala", "579" , Role.SELLER);
+        user = new User("Rebekah", "Cala", "579", Role.SELLER);
         users.add(user);
 
         user = new User("Emy", "Lela", "234", Role.SELLER);

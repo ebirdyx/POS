@@ -54,8 +54,12 @@ public class User implements SerializableData {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
-        this.status = status;
+    public void switchStatus() {
+        if (this.status.equals(UserStatus.ENABLED)) {
+            this.status = UserStatus.DISABLED;
+        } else {
+            this.status = UserStatus.ENABLED;
+        }
     }
 
     public String getPin() {
