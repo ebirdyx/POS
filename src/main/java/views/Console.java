@@ -9,6 +9,7 @@ import errors.*;
 import utils.Converters;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Console {
@@ -62,7 +63,8 @@ public class Console {
         //create new item with userInput
         try {
             Item newItem = this.posController.createNewItem(name, cost, price);
-            System.out.println(newItem.toString());
+
+            System.out.println("Successfully created! " + newItem.toString());
         } catch (PriceCannotBeNegative e) {
             System.out.println("Price cannot be negative.");
             createItemMenu();
@@ -71,13 +73,23 @@ public class Console {
             createItemMenu();
         } catch (ItemNameAlreadyExists e) {
             System.out.println("Name already exists.");
-            createItemMenu();
+
         } catch (ItemPriceShouldBeGreaterThanCost itemPriceShouldBeGreaterThanCost) {
             System.out.println("Item price should be greater than cost.");
-            createItemMenu();
+
         }
 
         System.out.println();
+        switch (getUserInput("Do you want to create another item? (yes/no) ").toLowerCase()) {
+            case "yes":
+                createItemMenu();
+                break;
+            case "no":
+                displayMainMenu();
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
     }
 
     public void displayInventoryItems() {
@@ -100,11 +112,21 @@ public class Console {
         try {
             this.posController.addQuantityToItem(codeItem, Converters.stringToInteger(quantityString));
             System.out.println("Item quantity successfully added!");
-  //          System.out.println("Logged as " + user.toString());
+
         } catch (ItemNotFound itemNotFound) {
             System.out.println("I was not able to find your item");
         }
 
+        switch (getUserInput("Do you want to add other item quantity ? (yes/no) ").toLowerCase()) {
+            case "yes":
+                addQuantityToItemMenu();
+                break;
+            case "no":
+                displayMainMenu();
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
         System.out.println();
     }
 
@@ -131,6 +153,17 @@ public class Console {
             System.out.println("Not enough quantity");
         }
 
+        System.out.println();
+        switch (getUserInput("Do you want to sell another item? (yes/no) ").toLowerCase()) {
+            case "yes":
+                sellItemMenu();
+                break;
+            case "no":
+                displayMainMenu();
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
         System.out.println();
     }
 
@@ -160,16 +193,28 @@ public class Console {
             newUser = this.posController.createNewUser(firstName, lastName, pin, role);
         } catch (NameCannotBeEmpty nameCannotBeEmpty) {
             System.out.println("First name and last name cannot be empty.");
-            createNewUser();
+
         } catch (UserPinAlreadyExists userPinAlreadyExists) {
             System.out.println("User pin already exists.");
-            createNewUser();
+
         } catch (PinCannotBeEmpty pinCannotBeEmpty) {
             System.out.println("User pin cannot be empty.");
-            createNewUser();
+
         }
         System.out.println("User successfully added!");
         System.out.println(newUser.toString());
+
+        System.out.println();
+        switch (getUserInput("Do you want to add another user? (yes/no) ").toLowerCase()) {
+            case "yes":
+                createNewUser();
+                break;
+            case "no":
+                manageUsersMenu();
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
     }
 
     public void listUsers() {
@@ -182,6 +227,7 @@ public class Console {
         }
 
         System.out.println();
+
     }
 
     public void switchUserStatus() {
@@ -195,6 +241,19 @@ public class Console {
         } catch (UserNotFound userNotFound) {
             System.out.println("User code not found.");
         }
+        System.out.println("User status successfully switched!");
+        System.out.println();
+
+        switch (getUserInput("Do you want to switch another user's status? (yes/no) ").toLowerCase()) {
+            case "yes":
+                switchUserStatus();
+                break;
+            case "no":
+                manageUsersMenu();
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
     }
 
     public void changeUserRole() {
@@ -207,6 +266,20 @@ public class Console {
             this.posController.changeUserRole(code);
         } catch (UserNotFound userNotFound) {
             System.out.println("User code not found.");
+        }
+        System.out.println("User role successfully changed!");
+
+        System.out.println();
+
+        switch (getUserInput("Do you want to switch another user's role? (yes/no) ").toLowerCase()) {
+            case "yes":
+                changeUserRole();
+                break;
+            case "no":
+                manageUsersMenu();
+                break;
+            default:
+                System.out.println("Invalid Input");
         }
 
     }
@@ -231,6 +304,7 @@ public class Console {
                 break;
             case "3":
                 listUsers();
+                manageUsersMenu();
                 break;
             case "4":
                   changeUserRole();
