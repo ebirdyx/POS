@@ -1,5 +1,5 @@
 import controllers.posController;
-import domain.POS;
+import models.POS;
 import store.FileStore;
 import store.Store;
 import views.Console;

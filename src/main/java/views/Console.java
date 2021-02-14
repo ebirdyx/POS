@@ -1,15 +1,14 @@
 package views;
 
 import controllers.posController;
-import domain.Item;
-import domain.Role;
-import domain.Sale;
-import domain.User;
+import models.Item;
+import models.Role;
+import models.Sale;
+import models.User;
 import errors.*;
 import utils.Converters;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Console {
