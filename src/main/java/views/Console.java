@@ -100,6 +100,7 @@ public class Console {
         try {
             this.posController.addQuantityToItem(codeItem, Converters.stringToInteger(quantityString));
             System.out.println("Item quantity successfully added!");
+  //          System.out.println("Logged as " + user.toString());
         } catch (ItemNotFound itemNotFound) {
             System.out.println("I was not able to find your item");
         }
@@ -167,6 +168,7 @@ public class Console {
             System.out.println("User pin cannot be empty.");
             createNewUser();
         }
+        System.out.println("User successfully added!");
         System.out.println(newUser.toString());
     }
 
@@ -187,13 +189,28 @@ public class Console {
         listUsers();
 
         String code = getUserInput("Enter the user's code ");
-         // setstatus
+        // setstatus
         try {
             this.posController.switchUserStatus(code);
         } catch (UserNotFound userNotFound) {
             System.out.println("User code not found.");
         }
     }
+
+    public void changeUserRole() {
+        displayTitle("Change the user's role");
+
+        listUsers();
+        String code = getUserInput("Enter the user's code ");
+
+        try {
+            this.posController.changeUserRole(code);
+        } catch (UserNotFound userNotFound) {
+            System.out.println("User code not found.");
+        }
+
+    }
+
     //TODO sort items according to sales
     //TODO sort sellers according to sales
 
@@ -216,7 +233,7 @@ public class Console {
                 listUsers();
                 break;
             case "4":
-                //  changeUserRoleMenu();
+                  changeUserRole();
                 break;
             case "m":
                 displayMainMenu();

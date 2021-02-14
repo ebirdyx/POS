@@ -59,6 +59,10 @@ public class posController {
         return this.pos.switchUserStatus(code);
     }
 
+    public User changeUserRole(String code) throws UserNotFound {
+        return this.pos.changeUserRole(code);
+    }
+
     public User authenticate(String pin) throws InvalidPinNumber {
         return this.pos.authenticate(pin);
     }

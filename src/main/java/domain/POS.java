@@ -158,6 +158,15 @@ public class POS {
         user.switchStatus();
         return user;
     }
+    public User changeUserRole(String code) throws UserNotFound {
+        User user = getUserByCode(code);
+        if (user == null) {
+            throw new UserNotFound();
+        }
+        user.changeUserRole();
+        return user;
+    }
+
 
     public User authenticate(String pin) throws InvalidPinNumber {
         for (int i = 0; i < users.size(); i++) {

@@ -62,6 +62,14 @@ public class User implements SerializableData {
         }
     }
 
+    public void changeUserRole() {
+        if (this.role.equals(Role.SELLER)) {
+            this.role = Role.ADMIN;
+        } else {
+            this.role = Role.SELLER;
+        }
+    }
+
     public String getPin() {
         return pin;
     }
