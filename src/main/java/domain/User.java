@@ -7,19 +7,30 @@ public class User implements SerializableData {
     private String firstName;
     private String lastName;
     private String pin;
+    private Role role;
 
-    public User(String firstName, String lastName, String pin) {
+    public User(String firstName, String lastName, String pin, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pin = pin;
         this.code = Randomizer.generateRandomString(3);
+        this.role = role;
     }
 
-    private User(String code, String firstName, String lastName, String pin) {
+    private User(String code, String firstName, String lastName, String pin, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pin = pin;
         this.code = code;
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getCode() {
@@ -31,6 +42,7 @@ public class User implements SerializableData {
         return "User{" +
                 "code='" + code + '\'' +
                 ", fullName='" + getUserFullName() + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 
@@ -48,7 +60,7 @@ public class User implements SerializableData {
 
     @Override
     public String serialize() {
-        return code + ";" + firstName + ";" + lastName + ";" + pin;
+        return code + ";" + firstName + ";" + lastName + ";" + pin + ";" + role;
     }
 
     public static User deserializeUser(String s) {
@@ -58,8 +70,9 @@ public class User implements SerializableData {
         String firstName = sParts[1];
         String lastName = sParts[2];
         String pin = sParts[3];
+        Role role = Role.valueOf(sParts[4]);
 
-        User user = new User(code, firstName, lastName, pin);
+        User user = new User(code, firstName, lastName, pin, role);
         return user;
     }
 }

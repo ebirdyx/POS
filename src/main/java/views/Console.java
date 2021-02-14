@@ -2,6 +2,7 @@ package views;
 
 import controllers.posController;
 import domain.Item;
+import domain.Role;
 import domain.Sale;
 import domain.User;
 import errors.*;
@@ -62,10 +63,10 @@ public class Console {
         try {
             Item newItem = this.posController.createNewItem(name, cost, price);
             System.out.println(newItem.toString());
-        }catch(PriceCannotBeNegative e){
+        } catch (PriceCannotBeNegative e) {
             System.out.println("Price cannot be negative.");
             createItemMenu();
-        }catch(NameCannotBeEmpty e){
+        } catch (NameCannotBeEmpty e) {
             System.out.println("Name cannot be empty.");
             createItemMenu();
         } catch (ItemNameAlreadyExists e) {
@@ -132,7 +133,7 @@ public class Console {
         System.out.println();
     }
 
-    public void displaySalesReport(){
+    public void displaySalesReport() {
         displayTitle("Sales report");
 
         List<Sale> sales = this.posController.getSales();
@@ -142,6 +143,49 @@ public class Console {
 
         System.out.println();
     }
+    public void createNewUserMenu(){
+        displayTitle("Add new user");
+
+        String firstName = getUserInput("Please enter the user's first name: ");
+        String lastName = getUserInput("Please enter the user's last last name: ");
+        String pin = getUserInput("Please enter the pin: ");
+        String roleString = getUserInput("Please enter the user's role: ").toUpperCase();
+
+        Role role = Role.valueOf(roleString);
+
+        User newUser = null;
+        try {
+            newUser = this.posController.createNewUser(firstName,lastName,pin, role);
+        } catch (NameCannotBeEmpty nameCannotBeEmpty) {
+            System.out.println("First name and last name cannot be empty.");
+            createNewUserMenu();
+        } catch (UserPinAlreadyExists userPinAlreadyExists) {
+            System.out.println("User pin already exists.");
+            createNewUserMenu();
+        } catch (PinCannotBeEmpty pinCannotBeEmpty) {
+            System.out.println("User pin cannot be empty.");
+            createNewUserMenu();
+        }
+        System.out.println(newUser.toString());
+    }
+
+    public void manageUsersMenu() {
+        displayTitle("Manage users");
+        System.out.println("1. Add user");
+        System.out.println("2. Disable user");
+        System.out.println("3. List users");
+        System.out.println("4. Change user role");
+        System.out.println("m. Main menu");
+
+        switch (getUserInput("Please choose an option: ").toLowerCase()) {
+            case "1":
+                createNewUserMenu();
+                break;
+            case "2":
+              //  disableUser();
+                break;
+        }
+    }
 
     public void displayMainMenu() {
         displayTitle("POS system");
@@ -149,7 +193,12 @@ public class Console {
         System.out.println("2. List Items ");
         System.out.println("3. Add quantity to inventory");
         System.out.println("4. Sell item");
-        System.out.println("5. Print sale report");
+
+        if (user.getRole().equals(Role.ADMIN)) {
+
+            System.out.println("5. Print sale report");
+            System.out.println("6. Manage users");
+        }
         System.out.println("l. Logout");
         System.out.println("q. Quit ");
 
@@ -168,6 +217,9 @@ public class Console {
                 break;
             case "5":
                 displaySalesReport();
+                break;
+            case "6":
+                manageUsersMenu();
                 break;
             case "l":
                 // Assign null to user property

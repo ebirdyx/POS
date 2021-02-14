@@ -1,9 +1,6 @@
 package controllers;
 
-import domain.POS;
-import domain.Item;
-import domain.Sale;
-import domain.User;
+import domain.*;
 import errors.*;
 
 import java.util.List;
@@ -33,6 +30,18 @@ public class posController {
         }
 
         return this.pos.createNewItem(name, cost, price);
+    }
+
+    public User createNewUser(String firstName, String lastName, String pin, Role role)
+            throws NameCannotBeEmpty, UserPinAlreadyExists, PinCannotBeEmpty {
+        if (firstName.length() == 0 || lastName.length() == 0) {
+            throw new NameCannotBeEmpty();
+        }
+        if(pin.length() == 0){
+            throw new PinCannotBeEmpty();
+        }
+
+        return this.pos.createNewUser(firstName, lastName, pin, role);
     }
 
     public List<Item> getItems() {

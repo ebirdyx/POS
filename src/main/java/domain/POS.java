@@ -44,6 +44,7 @@ public class POS {
 
     /**
      * Create a new Item type in the inventory
+     *
      * @param name
      * @param price
      * @return
@@ -67,12 +68,12 @@ public class POS {
         return item;
     }
 
-    public User createNewUser(String firstName, String lastName, String pin) throws UserPinAlreadyExists {
+    public User createNewUser(String firstName, String lastName, String pin, Role role) throws UserPinAlreadyExists {
         if (userPinExists(pin)) {
             throw new UserPinAlreadyExists();
         }
 
-        User user = new User(firstName, lastName, pin);
+        User user = new User(firstName, lastName, pin, role);
         users.add(user);
 
         saveData();
@@ -82,6 +83,7 @@ public class POS {
 
     /**
      * Checks if an Item name already exists
+     *
      * @param name
      * @return
      */
@@ -107,6 +109,7 @@ public class POS {
 
     /**
      * Returns item matching code
+     *
      * @param code
      * @return
      */
@@ -122,6 +125,7 @@ public class POS {
 
     /**
      * Return items in inventory
+     *
      * @return
      */
     public ArrayList<Item> getItems() {
@@ -148,6 +152,7 @@ public class POS {
 
     /**
      * Add additional quantity to an Item
+     *
      * @param itemCode
      * @param quantity
      * @throws ItemNotFound
@@ -166,6 +171,7 @@ public class POS {
 
     /**
      * Sell quantity of an Item
+     *
      * @param itemCode
      * @param quantity
      * @throws ItemNotFound
@@ -216,13 +222,13 @@ public class POS {
      */
     private void seedUsers() {
         User user;
-        user = new User("Pamela", "Brahollari", "354");
+        user = new User("Pamela", "Brahollari", "354" , Role.ADMIN);
         users.add(user);
 
-        user = new User("Rebekah", "Cala", "579");
+        user = new User("Rebekah", "Cala", "579" , Role.SELLER);
         users.add(user);
 
-        user = new User("Emy", "Lela", "234");
+        user = new User("Emy", "Lela", "234", Role.SELLER);
         users.add(user);
     }
 
@@ -242,7 +248,7 @@ public class POS {
      * Load data into inventory from store
      */
     public void loadData() {
-         String[] serializedItems = store.loadData();
+        String[] serializedItems = store.loadData();
 
         for (int i = 0; i < serializedItems.length; i++) {
             String[] sParts = serializedItems[i].split(";");
