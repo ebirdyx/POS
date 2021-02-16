@@ -368,8 +368,7 @@ public class Console {
     public String getUserInput(String msg) {
         System.out.print(msg);
 
-        String UserInput = scanner.next();
-        System.out.println();
+        String UserInput = scanner.nextLine();
         return UserInput;
     }
 }
